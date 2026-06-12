@@ -1,0 +1,20 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+
+# User files
+*.user
+*.suo
+
+# Database / cache
+*.db
+*.cache
+
+# Logs
+*.log
+
+# Build files
+*.dll
+*.exe
+``
