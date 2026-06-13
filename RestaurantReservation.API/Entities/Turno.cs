@@ -1,7 +1,10 @@
 ﻿using System;
 
-public class Turno
+namespace RestaurantReservation.API.Entities
 {
-    public int Id { get; set; }
-    public string Horario { get; set; }
+    public class Turno
+    {
+        public int Id { get; set; }
+        public string Horario { get; set; }
+    }
 }

@@ -1,7 +1,10 @@
 ﻿using System;
 
-public class Mesa
+namespace RestaurantReservation.API.Entities
 {
-    public int Id { get; set; }
-    public int Capacidad { get; set; }
+    public class Mesa
+    {
+        public int Id { get; set; }
+        public int Capacidad { get; set; }
+    }
 }

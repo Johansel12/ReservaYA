@@ -1,23 +1,30 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
-using RestaurantReservation.API.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using RestaurantReservation.API.Data;
+using RestaurantReservation.API.Entities;
 
 [ApiController]
 [Route("api/[controller]")]
 public class MesaController : ControllerBase
 {
-    private static List<MesaDTO> mesas = new List<MesaDTO>();
+    private readonly ApplicationDbContext _context;
+
+    public MesaController(ApplicationDbContext context)
+    {
+        _context = context;
+    }
 
     [HttpGet]
-    public IEnumerable<MesaDTO> Get()
+    public async Task<IEnumerable<Mesa>> Get()
     {
-        return mesas;
+        return await _context.Mesas.ToListAsync();
     }
 
     [HttpPost]
-    public IActionResult Post(MesaDTO mesa)
+    public async Task<IActionResult> Post(Mesa mesa)
     {
-        mesas.Add(mesa);
+        _context.Mesas.Add(mesa);
+        await _context.SaveChangesAsync();
         return Ok(mesa);
     }
 }
