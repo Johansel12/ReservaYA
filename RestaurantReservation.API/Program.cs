@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using RestaurantReservation.API.Data;
+using RestaurantReservation.Infrastructure.Context;
 
 var builder = WebApplication.CreateBuilder(args);
 
