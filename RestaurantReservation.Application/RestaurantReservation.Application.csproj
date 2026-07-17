@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Core\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\RestaurantReservation.Domain\RestaurantReservation.Domain.csproj" />
     <ProjectReference Include="..\RestaurantReservation.Infrastructure\RestaurantReservation.Infrastructure.csproj" />
   </ItemGroup>
