@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RestaurantReservation.Application.Contract;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Domain.Interfaces;
 
@@ -6,17 +7,22 @@ using RestaurantReservation.Domain.Interfaces;
 [Route("api/[controller]")]
 public class MesaController : ControllerBase
 {
+    private readonly IMesaService _mesaService;
     private readonly IMesaRepository _mesaRepository;
-    public MesaController(IMesaRepository mesaRepository)
+
+    public MesaController(
+        IMesaService mesaService,
+        IMesaRepository mesaRepository)
     {
+        _mesaService = mesaService;
         _mesaRepository = mesaRepository;
     }
 
     //GET
     [HttpGet]
-    public async Task<IEnumerable<Mesa>> Get()
+    public async Task<IActionResult> Get()
     {
-        return await _mesaRepository.GetAllAsync();
+        return Ok(await _mesaService.GetAllAsync());
     }
 
     //POST

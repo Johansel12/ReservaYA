@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RestaurantReservation.Application.Dtos;
 
-namespace RestaurantReservation.Application.Contract
+namespace RestaurantReservation.Application.Contract;
+public interface IReservaService
 {
-    class IReservaService
-    {
-    }
+    Task<IEnumerable<ReservaDto>> GetAllAsync();
 }

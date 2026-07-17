@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RestaurantReservation.Application.Contract;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Domain.Interfaces;
 
@@ -6,17 +7,21 @@ using RestaurantReservation.Domain.Interfaces;
 [Route("api/[controller]")]
 public class TurnoController : ControllerBase
 {
+    private readonly ITurnoService _turnoService;
     private readonly ITurnoRepository _turnoRepository;
-    public TurnoController(ITurnoRepository turnoRepository)
+    public TurnoController(
+        ITurnoService turnoService,
+        ITurnoRepository turnoRepository)
     {
+        _turnoService = turnoService;
         _turnoRepository = turnoRepository;
     }
 
     //GET
     [HttpGet]
-    public async Task<IEnumerable<Turno>> Get()
+    public async Task<IActionResult> Get()
     {
-        return await _turnoRepository.GetAllAsync();
+        return Ok(await _turnoService.GetAllAsync());
     }
 
     //POST
@@ -48,7 +53,6 @@ public class TurnoController : ControllerBase
         {
             return NotFound("Turno no encontrado.");
         }
-
         await _turnoRepository.DeleteAsync(id);
         return Ok();
     }

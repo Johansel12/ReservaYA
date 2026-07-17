@@ -8,11 +8,11 @@
 
   <ItemGroup>
     <Folder Include="Core\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\RestaurantReservation.Domain\RestaurantReservation.Domain.csproj" />
+    <ProjectReference Include="..\RestaurantReservation.Infrastructure\RestaurantReservation.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

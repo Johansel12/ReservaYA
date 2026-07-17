@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RestaurantReservation.Application.Contract;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Domain.Interfaces;
 
@@ -6,17 +7,21 @@ using RestaurantReservation.Domain.Interfaces;
 [Route("api/[controller]")]
 public class ReservaController : ControllerBase
 {
+    private readonly IReservaService _reservaService;
     private readonly IReservaRepository _reservaRepository;
-    public ReservaController(IReservaRepository reservaRepository)
+    public ReservaController(
+        IReservaService reservaService,
+        IReservaRepository reservaRepository)
     {
+        _reservaService = reservaService;
         _reservaRepository = reservaRepository;
     }
 
     //GET
     [HttpGet]
-    public async Task<IEnumerable<Reserva>> Get()
+    public async Task<IActionResult> Get()
     {
-        return await _reservaRepository.GetAllAsync();
+        return Ok(await _reservaService.GetAllAsync());
     }
 
     //POST
@@ -44,7 +49,6 @@ public class ReservaController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var reserva = await _reservaRepository.GetByIdAsync(id);
-
         if (reserva == null)
         {
             return NotFound("Reserva no encontrada.");
