@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RestaurantReservation.Infrastructure.Context;
+using RestaurantReservation.API.Data;
 using RestaurantReservation.Domain.Entities;
 
 [ApiController]
