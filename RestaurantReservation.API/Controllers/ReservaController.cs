@@ -1,32 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RestaurantReservation.API.Data;
-using RestaurantReservation.API.Entities;
+using RestaurantReservation.Domain.Entities;
+using RestaurantReservation.Domain.Interfaces;
 
 [ApiController]
 [Route("api/[controller]")]
 public class ReservaController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
-
-    public ReservaController(ApplicationDbContext context)
+    private readonly IReservaRepository _reservaRepository;
+    public ReservaController(IReservaRepository reservaRepository)
     {
-        _context = context;
+        _reservaRepository = reservaRepository;
     }
 
     //GET
     [HttpGet]
     public async Task<IEnumerable<Reserva>> Get()
     {
-        return await _context.Reservas.ToListAsync();
+        return await _reservaRepository.GetAllAsync();
     }
 
     //POST
     [HttpPost]
     public async Task<IActionResult> Post(Reserva reserva)
     {
-        _context.Reservas.Add(reserva);
-        await _context.SaveChangesAsync();
+        await _reservaRepository.AddAsync(reserva);
         return Ok(reserva);
     }
 
@@ -35,11 +32,10 @@ public class ReservaController : ControllerBase
     public async Task<IActionResult> Put(int id, Reserva reserva)
     {
         if (id != reserva.Id)
+        {
             return BadRequest();
-
-        _context.Entry(reserva).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-
+        }
+        await _reservaRepository.UpdateAsync(reserva);
         return Ok(reserva);
     }
 
@@ -47,14 +43,13 @@ public class ReservaController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var reserva = await _context.Reservas.FindAsync(id);
+        var reserva = await _reservaRepository.GetByIdAsync(id);
 
         if (reserva == null)
-            return NotFound();
-
-        _context.Reservas.Remove(reserva);
-        await _context.SaveChangesAsync();
-
+        {
+            return NotFound("Reserva no encontrada.");
+        }
+        await _reservaRepository.DeleteAsync(id);
         return Ok();
     }
 }

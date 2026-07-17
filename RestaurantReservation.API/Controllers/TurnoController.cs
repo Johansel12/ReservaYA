@@ -1,32 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RestaurantReservation.API.Data;
-using RestaurantReservation.API.Entities;
+using RestaurantReservation.Domain.Entities;
+using RestaurantReservation.Domain.Interfaces;
 
 [ApiController]
 [Route("api/[controller]")]
 public class TurnoController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
-
-    public TurnoController(ApplicationDbContext context)
+    private readonly ITurnoRepository _turnoRepository;
+    public TurnoController(ITurnoRepository turnoRepository)
     {
-        _context = context;
+        _turnoRepository = turnoRepository;
     }
 
     //GET
     [HttpGet]
     public async Task<IEnumerable<Turno>> Get()
     {
-        return await _context.Turnos.ToListAsync();
+        return await _turnoRepository.GetAllAsync();
     }
 
     //POST
     [HttpPost]
     public async Task<IActionResult> Post(Turno turno)
     {
-        _context.Turnos.Add(turno);
-        await _context.SaveChangesAsync();
+        await _turnoRepository.AddAsync(turno);
         return Ok(turno);
     }
 
@@ -35,11 +32,10 @@ public class TurnoController : ControllerBase
     public async Task<IActionResult> Put(int id, Turno turno)
     {
         if (id != turno.Id)
+        {
             return BadRequest();
-
-        _context.Entry(turno).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-
+        }
+        await _turnoRepository.UpdateAsync(turno);
         return Ok(turno);
     }
 
@@ -47,14 +43,13 @@ public class TurnoController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var turno = await _context.Turnos.FindAsync(id);
-
+        var turno = await _turnoRepository.GetByIdAsync(id);
         if (turno == null)
-            return NotFound();
+        {
+            return NotFound("Turno no encontrado.");
+        }
 
-        _context.Turnos.Remove(turno);
-        await _context.SaveChangesAsync();
-
+        await _turnoRepository.DeleteAsync(id);
         return Ok();
     }
 }

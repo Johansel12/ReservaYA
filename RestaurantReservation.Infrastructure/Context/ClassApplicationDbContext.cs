@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using RestaurantReservation.API.Entities;
+using RestaurantReservation.Domain.Entities;
 
-namespace RestaurantReservation.API.Data
+namespace RestaurantReservation.Infrastructure.Context
 {
     public class ApplicationDbContext : DbContext
     {
@@ -10,7 +10,6 @@ namespace RestaurantReservation.API.Data
             : base(options)
         {
         }
-
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Mesa> Mesas { get; set; }
         public DbSet<Turno> Turnos { get; set; }
