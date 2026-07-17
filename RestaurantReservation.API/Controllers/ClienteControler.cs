@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using RestaurantReservation.Application.Contract;
 using RestaurantReservation.Domain.Entities;
 using RestaurantReservation.Domain.Interfaces;
 
@@ -6,17 +7,22 @@ using RestaurantReservation.Domain.Interfaces;
 [Route("api/[controller]")]
 public class ClienteController : ControllerBase
 {
+    private readonly IClienteService _clienteService;
     private readonly IClienteRepository _clienteRepository;
-    public ClienteController(IClienteRepository clienteRepository)
+
+    public ClienteController(
+        IClienteService clienteService,
+        IClienteRepository clienteRepository)
     {
+        _clienteService = clienteService;
         _clienteRepository = clienteRepository;
     }
 
     //GET
     [HttpGet]
-    public async Task<IEnumerable<Cliente>> Get()
+    public async Task<IActionResult> Get()
     {
-        return await _clienteRepository.GetAllAsync();
+        return Ok(await _clienteService.GetAllAsync());
     }
 
     //POST
@@ -44,6 +50,7 @@ public class ClienteController : ControllerBase
     public async Task<IActionResult> Delete(int id)
     {
         var cliente = await _clienteRepository.GetByIdAsync(id);
+
         if (cliente == null)
         {
             return NotFound("Cliente no encontrado.");

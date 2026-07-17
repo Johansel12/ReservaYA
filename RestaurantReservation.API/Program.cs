@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.Infrastructure.Context;
 using RestaurantReservation.Domain.Interfaces;
 using RestaurantReservation.Infrastructure.Repositories;
+using RestaurantReservation.Application.Contract;
+using RestaurantReservation.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,11 @@ builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IMesaRepository, MesaRepository>();
 builder.Services.AddScoped<ITurnoRepository, TurnoRepository>();
 builder.Services.AddScoped<IReservaRepository, ReservaRepository>();
+
+builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<IMesaService, MesaService>();
+builder.Services.AddScoped<ITurnoService, TurnoService>();
+builder.Services.AddScoped<IReservaService, ReservaService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

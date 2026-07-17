@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RestaurantReservation.Application\RestaurantReservation.Application.csproj" />
     <ProjectReference Include="..\RestaurantReservation.Domain\RestaurantReservation.Domain.csproj" />
     <ProjectReference Include="..\RestaurantReservation.Infrastructure\RestaurantReservation.Infrastructure.csproj" />
   </ItemGroup>

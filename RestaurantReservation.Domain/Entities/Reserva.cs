@@ -1,14 +1,10 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace RestaurantReservation.Domain.Entities
+namespace RestaurantReservation.Domain.Entities;
+public class Turno
 {
-    public class Reserva
-    {
-        public int Id { get; set; }
-        public int ClienteId { get; set; }
-        public int MesaId { get; set; }
-        public int TurnoId { get; set; }
-        public DateTime Fecha { get; set; }
-    }
+    public int Id { get; set; }
 
+    [Required(ErrorMessage = "El horario es obligatorio.")]
+    public string Horario { get; set; } = string.Empty;
 }
