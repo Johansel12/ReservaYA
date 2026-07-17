@@ -1,36 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RestaurantReservation.Infrastructure.Context;
 using RestaurantReservation.Domain.Entities;
+using RestaurantReservation.Domain.Interfaces;
 
 [ApiController]
 [Route("api/[controller]")]
 public class ClienteController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
-
-    public ClienteController(ApplicationDbContext context)
+    private readonly IClienteRepository _clienteRepository;
+    public ClienteController(IClienteRepository clienteRepository)
     {
-        _context = context;
+        _clienteRepository = clienteRepository;
     }
 
     //GET
     [HttpGet]
     public async Task<IEnumerable<Cliente>> Get()
     {
-        return await _context.Clientes.ToListAsync();
+        return await _clienteRepository.GetAllAsync();
     }
 
     //POST
     [HttpPost]
     public async Task<IActionResult> Post(Cliente cliente)
     {
-        _context.Clientes.Add(cliente);
-        await _context.SaveChangesAsync();
+        await _clienteRepository.AddAsync(cliente);
         return Ok(cliente);
     }
 
-    //PUT 
+    //PUT
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, Cliente cliente)
     {
@@ -38,29 +35,20 @@ public class ClienteController : ControllerBase
         {
             return BadRequest();
         }
-
-        _context.Entry(cliente).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-
+        await _clienteRepository.UpdateAsync(cliente);
         return Ok(cliente);
     }
 
-    //DELETE 
+    //DELETE
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var cliente = await _context.Clientes.FindAsync(id);
-
+        var cliente = await _clienteRepository.GetByIdAsync(id);
         if (cliente == null)
         {
-            return NotFound();
+            return NotFound("Cliente no encontrado.");
         }
-
-        _context.Clientes.Remove(cliente);
-        await _context.SaveChangesAsync();
-
+        await _clienteRepository.DeleteAsync(id);
         return Ok();
     }
 }
-
-
