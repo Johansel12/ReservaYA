@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestaurantReservation.API.Data;
-using RestaurantReservation.API.Entities;
+using RestaurantReservation.Domain.Entities;
 
 [ApiController]
 [Route("api/[controller]")]
 public class MesaController : ControllerBase
-{
+{       
     private readonly ApplicationDbContext _context;
 
     public MesaController(ApplicationDbContext context)

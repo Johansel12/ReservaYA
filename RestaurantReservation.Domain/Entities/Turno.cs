@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RestaurantReservation.API.Entities
+namespace RestaurantReservation.Domain.Entities
 {
     public class Turno
     {

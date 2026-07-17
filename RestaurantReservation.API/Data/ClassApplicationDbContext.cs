@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using RestaurantReservation.API.Entities;
+using RestaurantReservation.Domain.Entities;
 
 namespace RestaurantReservation.API.Data
 {
