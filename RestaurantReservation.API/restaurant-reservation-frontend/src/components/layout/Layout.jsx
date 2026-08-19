@@ -10,7 +10,7 @@ function Layout() {
             <div className="main-content">
                 <Navbar />
 
-                <div className="container-fluid p-4">
+                <div className="page-content">
                     <Outlet />
                 </div>
             </div>

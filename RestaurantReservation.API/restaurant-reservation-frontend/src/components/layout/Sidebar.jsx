@@ -1,34 +1,67 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function Sidebar() {
     return (
         <div className="sidebar">
             <div className="p-3 border-bottom">
-                <h4 className="text-white mb-0">
-                    RestaurantRes
+                <h4 className="mb-0">
+                    Reserva
+                    <span style={{ color: "#C79A3C" }}>
+                        YA
+                    </span>
                 </h4>
+
+                <small className="text-secondary">
+                    Restaurant Reservation System
+                </small>
             </div>
 
             <div className="p-2">
-                <Link to="/" className="d-block text-white p-2 text-decoration-none">
+                <NavLink
+                    to="/"
+                    end
+                    className={({ isActive }) =>
+                        `sidebar-link ${isActive ? "active" : ""}`
+                    }
+                >
                     Dashboard
-                </Link>
+                </NavLink>
 
-                <Link to="/clientes" className="d-block text-white p-2 text-decoration-none">
+                <NavLink
+                    to="/clientes"
+                    className={({ isActive }) =>
+                        `sidebar-link ${isActive ? "active" : ""}`
+                    }
+                >
                     Clientes
-                </Link>
+                </NavLink>
 
-                <Link to="/mesas" className="d-block text-white p-2 text-decoration-none">
+                <NavLink
+                    to="/mesas"
+                    className={({ isActive }) =>
+                        `sidebar-link ${isActive ? "active" : ""}`
+                    }
+                >
                     Mesas
-                </Link>
+                </NavLink>
 
-                <Link to="/turnos" className="d-block text-white p-2 text-decoration-none">
+                <NavLink
+                    to="/turnos"
+                    className={({ isActive }) =>
+                        `sidebar-link ${isActive ? "active" : ""}`
+                    }
+                >
                     Turnos
-                </Link>
+                </NavLink>
 
-                <Link to="/reservas" className="d-block text-white p-2 text-decoration-none">
+                <NavLink
+                    to="/reservas"
+                    className={({ isActive }) =>
+                        `sidebar-link ${isActive ? "active" : ""}`
+                    }
+                >
                     Reservas
-                </Link>
+                </NavLink>
             </div>
         </div>
     );

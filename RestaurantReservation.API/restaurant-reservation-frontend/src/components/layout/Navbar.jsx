@@ -1,7 +1,7 @@
 function Navbar() {
     return (
-        <nav className="navbar navbar-light bg-white border-bottom px-4">
-            <div className="container-fluid">
+        <nav className="topbar">
+            <div className="d-flex justify-content-between align-items-center">
                 <h5 className="mb-0">
                     Restaurant Reservation System
                 </h5>

@@ -1,7 +1,9 @@
 function PageHeader({ title, subtitle }) {
     return (
         <div className="mb-4">
-            <h2>{title}</h2>
+            <h1 className="mb-2">
+                {title}
+            </h1>
 
             {subtitle && (
                 <p className="text-muted mb-0">
@@ -13,3 +15,4 @@ function PageHeader({ title, subtitle }) {
 }
 
 export default PageHeader;
+``

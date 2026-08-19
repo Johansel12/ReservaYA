@@ -1,14 +1,12 @@
 function StatCard({ label, value }) {
     return (
-        <div className="card h-100">
-            <div className="card-body">
-                <p className="text-muted mb-1">
-                    {label}
-                </p>
+        <div className="card-app stat-card h-100">
+            <div className="stat-label">
+                {label}
+            </div>
 
-                <h2 className="mb-0">
-                    {value}
-                </h2>
+            <div className="stat-value">
+                {value}
             </div>
         </div>
     );
