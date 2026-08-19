@@ -111,3 +111,40 @@ body {
         color: white;
         border-left: 4px solid var(--color-accent);
     }
+
+.table-app thead th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #8A8072;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.table-app td {
+    vertical-align: middle;
+    border-color: var(--color-border);
+}
+
+.btn-accent {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: #2B2620;
+    font-weight: 600;
+}
+
+    .btn-accent:hover {
+        background: #B38A31;
+        border-color: #B38A31;
+        color: white;
+    }
+
+.form-control,
+.form-select {
+    border: 1px solid var(--color-border);
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 .2rem rgba(199, 154, 60, 0.15);
+    }
