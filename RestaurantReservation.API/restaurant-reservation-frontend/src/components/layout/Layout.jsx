@@ -1,0 +1,21 @@
+import { Outlet } from "react-router-dom";
+import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
+
+function Layout() {
+    return (
+        <div className="app-shell">
+            <Sidebar />
+
+            <div className="main-content">
+                <Navbar />
+
+                <div className="container-fluid p-4">
+                    <Outlet />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Layout;
