@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import EmptyState from "../components/ui/EmptyState";
+import { toast } from "react-toastify";
 
 import {
     reservaService,
@@ -84,8 +85,12 @@ function Reservas() {
                     id: editId,
                     ...payload
                 });
+
+                toast.success("Reserva actualizada correctamente");
             } else {
                 await reservaService.create(payload);
+
+                toast.success("Reserva creada correctamente");
             }
 
             setForm(initialForm);
@@ -95,7 +100,8 @@ function Reservas() {
         }
         catch (error) {
             console.error(error);
-            alert("Error al guardar la reserva.");
+
+            toast.error("Error al guardar la reserva");
         }
     };
 
@@ -115,10 +121,15 @@ function Reservas() {
 
         try {
             await reservaService.remove(id);
+
+            toast.success("Reserva eliminada correctamente");
+
             cargarDatos();
         }
         catch (error) {
             console.error(error);
+
+            toast.error("Error al eliminar la reserva");
         }
     };
 

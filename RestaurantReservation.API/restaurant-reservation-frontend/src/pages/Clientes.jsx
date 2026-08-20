@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import EmptyState from "../components/ui/EmptyState";
+import { toast } from "react-toastify";
 
 import { clienteService } from "../services/API";
 
@@ -57,8 +58,12 @@ function Clientes() {
                     telefono: form.telefono,
                     email: form.email
                 });
+
+                toast.success("Cliente actualizado correctamente");
             } else {
                 await clienteService.create(form);
+
+                toast.success("Cliente creado correctamente");
             }
 
             setForm(initialForm);
@@ -67,7 +72,8 @@ function Clientes() {
             cargarClientes();
         } catch (error) {
             console.error(error);
-            alert("Error al guardar el cliente.");
+
+            toast.error("Error al guardar el cliente");
         }
     };
 
@@ -83,12 +89,17 @@ function Clientes() {
 
     const handleDelete = async (id) => {
         if (!window.confirm("¿Eliminar este cliente?")) return;
+
         try {
             await clienteService.remove(id);
+
+            toast.success("Cliente eliminado correctamente");
+
             cargarClientes();
         } catch (error) {
             console.error(error);
-            alert("Error al eliminar el cliente.");
+
+            toast.error("Error al eliminar el cliente");
         }
     };
 
@@ -126,7 +137,7 @@ function Clientes() {
 
                     <div className="col-md-3">
                         <label className="form-label">
-                            Telófono
+                            Teléfono
                         </label>
 
                         <input
@@ -196,7 +207,7 @@ function Clientes() {
                                     <tr>
                                         <th>ID</th>
                                         <th>Nombre</th>
-                                        <th>Telófono</th>
+                                        <th>Teléfono</th>
                                         <th>Email</th>
                                         <th>Acciones</th>
                                     </tr>

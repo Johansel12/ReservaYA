@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import EmptyState from "../components/ui/EmptyState";
+import { toast } from "react-toastify";
 
 import { mesaService } from "../services/API";
 
@@ -59,8 +60,12 @@ function Mesas() {
                     id: editId,
                     ...payload
                 });
+
+                toast.success("Mesa actualizada correctamente");
             } else {
                 await mesaService.create(payload);
+
+                toast.success("Mesa creada correctamente");
             }
 
             setForm(initialForm);
@@ -70,7 +75,8 @@ function Mesas() {
         }
         catch (error) {
             console.error(error);
-            alert("Error al guardar la mesa.");
+
+            toast.error("Error al guardar la mesa");
         }
     };
 
@@ -89,11 +95,15 @@ function Mesas() {
 
         try {
             await mesaService.remove(id);
+
+            toast.success("Mesa eliminada correctamente");
+
             cargarMesas();
         }
         catch (error) {
             console.error(error);
-            alert("Error al eliminar la mesa.");
+
+            toast.error("Error al eliminar la mesa");
         }
     };
 
