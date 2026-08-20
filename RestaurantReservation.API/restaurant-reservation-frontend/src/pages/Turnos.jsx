@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import EmptyState from "../components/ui/EmptyState";
+import { toast } from "react-toastify";
 
 import { turnoService } from "../services/API";
 
@@ -52,10 +53,14 @@ function Turnos() {
                     id: editId,
                     horario: form.horario
                 });
+
+                toast.success("Turno actualizado correctamente");
             } else {
                 await turnoService.create({
                     horario: form.horario
                 });
+
+                toast.success("Turno creado correctamente");
             }
 
             setForm(initialForm);
@@ -64,7 +69,8 @@ function Turnos() {
             cargarTurnos();
         } catch (error) {
             console.error(error);
-            alert("Error al guardar el turno.");
+
+            toast.error("Error al guardar el turno");
         }
     };
 
@@ -81,10 +87,14 @@ function Turnos() {
 
         try {
             await turnoService.remove(id);
+
+            toast.success("Turno eliminado correctamente");
+
             cargarTurnos();
         } catch (error) {
             console.error(error);
-            alert("Error al eliminar el turno.");
+
+            toast.error("Error al eliminar el turno");
         }
     };
 
