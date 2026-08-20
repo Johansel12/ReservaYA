@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import EmptyState from "../components/ui/EmptyState";
+import ConfirmDialog from "../components/ui/ConfirmDialog";
 import { toast } from "react-toastify";
 
 import { turnoService } from "../services/API";
@@ -17,6 +18,8 @@ function Turnos() {
     const [editId, setEditId] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
 
     useEffect(() => {
         cargarTurnos();
@@ -82,19 +85,29 @@ function Turnos() {
         setEditId(turno.id);
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("¿Eliminar este turno?")) return;
+    const handleDelete = (id) => {
+        setSelectedId(id);
+        setShowDeleteModal(true);
+    };
 
+    const confirmarEliminacion = async () => {
         try {
-            await turnoService.remove(id);
+            await turnoService.remove(selectedId);
 
-            toast.success("Turno eliminado correctamente");
+            toast.success(
+                "Turno eliminado correctamente"
+            );
 
             cargarTurnos();
         } catch (error) {
             console.error(error);
 
-            toast.error("Error al eliminar el turno");
+            toast.error(
+                "Error al eliminar el turno"
+            );
+        } finally {
+            setShowDeleteModal(false);
+            setSelectedId(null);
         }
     };
 
@@ -189,6 +202,16 @@ function Turnos() {
                     )
                 )}
             </div>
+            <ConfirmDialog
+                show={showDeleteModal}
+                title="Confirmar eliminación"
+                message="¿Seguro que deseas eliminar este turno?"
+                onConfirm={confirmarEliminacion}
+                onClose={() => {
+                    setShowDeleteModal(false);
+                    setSelectedId(null);
+                }}
+            />
         </>
     );
 }

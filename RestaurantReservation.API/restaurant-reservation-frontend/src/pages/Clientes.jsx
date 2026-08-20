@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import EmptyState from "../components/ui/EmptyState";
+import ConfirmDialog from "../components/ui/ConfirmDialog";
 import { toast } from "react-toastify";
 
 import { clienteService } from "../services/API";
@@ -19,6 +20,8 @@ function Clientes() {
     const [editId, setEditId] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
 
     useEffect(() => {
         cargarClientes();
@@ -87,19 +90,29 @@ function Clientes() {
         setEditId(cliente.id);
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("¿Eliminar este cliente?")) return;
+    const handleDelete = (id) => {
+        setSelectedId(id);
+        setShowDeleteModal(true);
+    };
 
+    const confirmarEliminacion = async () => {
         try {
-            await clienteService.remove(id);
+            await clienteService.remove(selectedId);
 
-            toast.success("Cliente eliminado correctamente");
+            toast.success(
+                "Cliente eliminado correctamente"
+            );
 
             cargarClientes();
         } catch (error) {
             console.error(error);
 
-            toast.error("Error al eliminar el cliente");
+            toast.error(
+                "Error al eliminar el cliente"
+            );
+        } finally {
+            setShowDeleteModal(false);
+            setSelectedId(null);
         }
     };
 
@@ -244,6 +257,13 @@ function Clientes() {
                     )
                 )}
             </div>
+            <ConfirmDialog
+                show={showDeleteModal}
+                title="Confirmar eliminación"
+                message="¿Seguro que deseas eliminar este cliente?"
+                onConfirm={confirmarEliminacion}
+                onClose={() => setShowDeleteModal(false)}
+            />
         </>
     );
 }

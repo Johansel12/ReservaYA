@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import EmptyState from "../components/ui/EmptyState";
+import ConfirmDialog from "../components/ui/ConfirmDialog";
 import { toast } from "react-toastify";
 
 import { mesaService } from "../services/API";
@@ -17,6 +18,8 @@ function Mesas() {
     const [editId, setEditId] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
 
     useEffect(() => {
         cargarMesas();
@@ -88,22 +91,31 @@ function Mesas() {
         setEditId(mesa.id);
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("¿Eliminar esta mesa?")) {
-            return;
-        }
+    const handleDelete = (id) => {
+        setSelectedId(id);
+        setShowDeleteModal(true);
+    };
 
+    const confirmarEliminacion = async () => {
         try {
-            await mesaService.remove(id);
+            await mesaService.remove(selectedId);
 
-            toast.success("Mesa eliminada correctamente");
+            toast.success(
+                "Mesa eliminada correctamente"
+            );
 
             cargarMesas();
         }
         catch (error) {
             console.error(error);
 
-            toast.error("Error al eliminar la mesa");
+            toast.error(
+                "Error al eliminar la mesa"
+            );
+        }
+        finally {
+            setShowDeleteModal(false);
+            setSelectedId(null);
         }
     };
 
@@ -217,6 +229,16 @@ function Mesas() {
                     )
                 )}
             </div>
+            <ConfirmDialog
+                show={showDeleteModal}
+                title="Confirmar eliminación"
+                message="¿Seguro que deseas eliminar esta mesa?"
+                onConfirm={confirmarEliminacion}
+                onClose={() => {
+                    setShowDeleteModal(false);
+                    setSelectedId(null);
+                }}
+            />
         </>
     );
 }

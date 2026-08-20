@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import PageHeader from "../components/ui/PageHeader";
 import LoadingSpinner from "../components/ui/LoadingSpinner";
 import EmptyState from "../components/ui/EmptyState";
+import ConfirmDialog from "../components/ui/ConfirmDialog";
 import { toast } from "react-toastify";
 
 import {
@@ -24,12 +25,11 @@ function Reservas() {
     const [clientes, setClientes] = useState([]);
     const [mesas, setMesas] = useState([]);
     const [turnos, setTurnos] = useState([]);
-
     const [form, setForm] = useState(initialForm);
-
     const [editId, setEditId] = useState(null);
-
     const [loading, setLoading] = useState(true);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [selectedId, setSelectedId] = useState(null);
 
     useEffect(() => {
         cargarDatos();
@@ -116,20 +116,31 @@ function Reservas() {
         setEditId(reserva.id);
     };
 
-    const handleDelete = async (id) => {
-        if (!window.confirm("¿Eliminar esta reserva?")) return;
+    const handleDelete = (id) => {
+        setSelectedId(id);
+        setShowDeleteModal(true);
+    };
 
+    const confirmarEliminacion = async () => {
         try {
-            await reservaService.remove(id);
+            await reservaService.remove(selectedId);
 
-            toast.success("Reserva eliminada correctamente");
+            toast.success(
+                "Reserva eliminada correctamente"
+            );
 
             cargarDatos();
         }
         catch (error) {
             console.error(error);
 
-            toast.error("Error al eliminar la reserva");
+            toast.error(
+                "Error al eliminar la reserva"
+            );
+        }
+        finally {
+            setShowDeleteModal(false);
+            setSelectedId(null);
         }
     };
 
@@ -311,6 +322,16 @@ function Reservas() {
                     </div>
                 )}
             </div>
+            <ConfirmDialog
+                show={showDeleteModal}
+                title="Confirmar eliminación"
+                message="¿Seguro que deseas eliminar esta reserva?"
+                onConfirm={confirmarEliminacion}
+                onClose={() => {
+                    setShowDeleteModal(false);
+                    setSelectedId(null);
+                }}
+            />
         </>
     );
 }
