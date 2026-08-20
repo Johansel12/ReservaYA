@@ -15,7 +15,7 @@ function Navbar() {
                     </h5>
 
                     <small className="text-muted">
-                        Sistema de Gestión de Reservas
+                        Sistema de GestiÃ³n de Reservas
                     </small>
                 </div>
 

@@ -362,3 +362,26 @@ body {
         opacity: 1;
     }
 }
+
+.confirm-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: rgba(199,154,60,.15);
+    color: var(--color-accent);
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-info {
+    margin: 20px;
+    margin-top: 75px;
+    padding: 18px;
+    border-radius: 12px;
+    background: rgba(199, 154, 60, 0.12);
+    border: 1px solid rgba(199, 154, 60, 0.25);
+    text-align: center;
+}

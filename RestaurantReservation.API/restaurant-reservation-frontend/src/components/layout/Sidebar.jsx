@@ -11,6 +11,7 @@ import {
 function Sidebar() {
     return (
         <div className="sidebar">
+
             <div className="p-3 border-bottom">
                 <h4 className="mb-0">
                     Reserva
@@ -20,7 +21,7 @@ function Sidebar() {
                 </h4>
 
                 <small className="text-secondary">
-                    Restaurant Reservation System
+                    Sistema de Gestión de Reservas
                 </small>
             </div>
 
@@ -78,6 +79,21 @@ function Sidebar() {
                 </NavLink>
 
             </div>
+
+            <div className="sidebar-info">
+                <h6>✨ ReservaYA</h6>
+
+                <p>
+                    Administra clientes, mesas,
+                    turnos y reservas desde un
+                    solo lugar.
+                </p>
+
+                <small>
+                    v1.0
+                </small>
+            </div>
+
         </div>
     );
 }
