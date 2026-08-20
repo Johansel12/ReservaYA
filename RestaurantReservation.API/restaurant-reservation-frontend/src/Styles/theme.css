@@ -176,3 +176,16 @@ body {
     .sidebar-link svg {
         flex-shrink: 0;
     }
+
+.stat-icon {
+    color: var(--color-accent);
+    display: flex;
+    align-items: center;
+}
+
+.card-app {
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04);
+}

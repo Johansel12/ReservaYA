@@ -12,6 +12,13 @@ import {
     reservaService
 } from "../services/API";
 
+import {
+    Users,
+    UtensilsCrossed,
+    Clock3,
+    CalendarDays
+} from "lucide-react";
+
 function Dashboard() {
     const [clientes, setClientes] = useState(0);
     const [mesas, setMesas] = useState(0);
@@ -62,10 +69,12 @@ function Dashboard() {
             />
 
             <div className="row g-3 mb-4">
+
                 <div className="col-md-3">
                     <StatCard
                         label="Clientes"
                         value={clientes}
+                        icon={<Users size={22} />}
                     />
                 </div>
 
@@ -73,6 +82,7 @@ function Dashboard() {
                     <StatCard
                         label="Mesas"
                         value={mesas}
+                        icon={<UtensilsCrossed size={22} />}
                     />
                 </div>
 
@@ -80,6 +90,7 @@ function Dashboard() {
                     <StatCard
                         label="Turnos"
                         value={turnos}
+                        icon={<Clock3 size={22} />}
                     />
                 </div>
 
@@ -87,8 +98,10 @@ function Dashboard() {
                     <StatCard
                         label="Reservas"
                         value={reservas}
+                        icon={<CalendarDays size={22} />}
                     />
                 </div>
+
             </div>
 
             <div className="card-app p-4">
