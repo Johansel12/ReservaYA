@@ -77,7 +77,7 @@ function Turnos() {
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm("¿Eliminar este turno?")) return;
+        if (!window.confirm("Â¿Eliminar este turno?")) return;
 
         try {
             await turnoService.remove(id);
@@ -92,7 +92,7 @@ function Turnos() {
         <>
             <PageHeader
                 title="Turnos"
-                subtitle="Gestión de horarios disponibles"
+                subtitle="GestiÃ³n de horarios disponibles"
             />
 
             <div className="card-app p-4 mb-4">

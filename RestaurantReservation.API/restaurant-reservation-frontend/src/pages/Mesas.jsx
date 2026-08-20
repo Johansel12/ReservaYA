@@ -83,7 +83,7 @@ function Mesas() {
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm("¿Eliminar esta mesa?")) {
+        if (!window.confirm("Â¿Eliminar esta mesa?")) {
             return;
         }
 
@@ -106,7 +106,7 @@ function Mesas() {
         <>
             <PageHeader
                 title="Mesas"
-                subtitle="Gestión de mesas del restaurante"
+                subtitle="GestiÃ³n de mesas del restaurante"
             />
 
             <div className="card-app p-4 mb-4">

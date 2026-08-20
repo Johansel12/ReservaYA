@@ -1,204 +1,239 @@
 import { useEffect, useState } from "react";
-import api from "../services/API";
+
+import PageHeader from "../components/ui/PageHeader";
+import LoadingSpinner from "../components/ui/LoadingSpinner";
+import EmptyState from "../components/ui/EmptyState";
+
+import { clienteService } from "../services/API";
+
+const initialForm = {
+    nombre: "",
+    telefono: "",
+    email: ""
+};
 
 function Clientes() {
     const [clientes, setClientes] = useState([]);
-
-    const [nuevoCliente, setNuevoCliente] = useState({
-        nombre: "",
-        telefono: "",
-        email: ""
-    });
-
-    const [clienteEditando, setClienteEditando] = useState(null);
+    const [form, setForm] = useState(initialForm);
+    const [editId, setEditId] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
-        obtenerClientes();
+        cargarClientes();
     }, []);
 
-    const obtenerClientes = async () => {
+    const cargarClientes = async () => {
+        setLoading(true);
+
         try {
-            const response = await api.get("/Cliente");
+            const response = await clienteService.getAll();
+
             setClientes(response.data);
+            setError(null);
         } catch (error) {
             console.error(error);
+            setError("No se pudieron cargar los clientes.");
+        } finally {
+            setLoading(false);
         }
     };
 
-    const crearCliente = async (e) => {
+    const handleChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
-            await api.post("/Cliente", nuevoCliente);
+            if (editId) {
+                await clienteService.update(editId, {
+                    id: editId,
+                    nombre: form.nombre,
+                    telefono: form.telefono,
+                    email: form.email
+                });
+            } else {
+                await clienteService.create(form);
+            }
 
-            setNuevoCliente({
-                nombre: "",
-                telefono: "",
-                email: ""
-            });
+            setForm(initialForm);
+            setEditId(null);
 
-            obtenerClientes();
+            cargarClientes();
         } catch (error) {
             console.error(error);
+            alert("Error al guardar el cliente.");
         }
     };
 
-    const eliminarCliente = async (id) => {
-        try {
-            await api.delete(`/Cliente/${id}`);
-            obtenerClientes();
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const editarCliente = (cliente) => {
-        setClienteEditando(cliente);
-
-        setNuevoCliente({
+    const handleEdit = (cliente) => {
+        setForm({
             nombre: cliente.nombre,
             telefono: cliente.telefono,
             email: cliente.email
         });
+
+        setEditId(cliente.id);
     };
 
-    const actualizarCliente = async (e) => {
-        e.preventDefault();
-
+    const handleDelete = async (id) => {
+        if (!window.confirm("¿Eliminar este cliente?")) return;
         try {
-            await api.put(`/Cliente/${clienteEditando.id}`, {
-                id: clienteEditando.id,
-                nombre: nuevoCliente.nombre,
-                telefono: nuevoCliente.telefono,
-                email: nuevoCliente.email
-            });
-
-            setClienteEditando(null);
-
-            setNuevoCliente({
-                nombre: "",
-                telefono: "",
-                email: ""
-            });
-
-            obtenerClientes();
+            await clienteService.remove(id);
+            cargarClientes();
         } catch (error) {
             console.error(error);
+            alert("Error al eliminar el cliente.");
         }
     };
 
+    const cancelarEdicion = () => {
+        setForm(initialForm);
+        setEditId(null);
+    };
+
     return (
-        <div className="container mt-4">
-            <h1 className="mb-4">Clientes</h1>
+        <>
+            <PageHeader
+                title="Clientes"
+                subtitle="Gestión de clientes del restaurante"
+            />
 
-            <form
-                onSubmit={
-                    clienteEditando
-                        ? actualizarCliente
-                        : crearCliente
-                }
-                className="mb-4"
-            >
-                <div className="row">
-                    <div className="col">
+            <div className="card-app p-4 mb-4">
+                <form
+                    onSubmit={handleSubmit}
+                    className="row g-3 align-items-end"
+                >
+                    <div className="col-md-3">
+                        <label className="form-label">
+                            Nombre
+                        </label>
+
                         <input
                             type="text"
+                            name="nombre"
                             className="form-control"
-                            placeholder="Nombre"
-                            value={nuevoCliente.nombre}
-                            onChange={(e) =>
-                                setNuevoCliente({
-                                    ...nuevoCliente,
-                                    nombre: e.target.value
-                                })
-                            }
+                            value={form.nombre}
+                            onChange={handleChange}
+                            required
                         />
                     </div>
 
-                    <div className="col">
+                    <div className="col-md-3">
+                        <label className="form-label">
+                            Telófono
+                        </label>
+
                         <input
                             type="text"
+                            name="telefono"
                             className="form-control"
-                            placeholder="Telefono"
-                            value={nuevoCliente.telefono}
-                            onChange={(e) =>
-                                setNuevoCliente({
-                                    ...nuevoCliente,
-                                    telefono: e.target.value
-                                })
-                            }
+                            value={form.telefono}
+                            onChange={handleChange}
+                            required
                         />
                     </div>
 
-                    <div className="col">
+                    <div className="col-md-4">
+                        <label className="form-label">
+                            Email
+                        </label>
+
                         <input
                             type="email"
+                            name="email"
                             className="form-control"
-                            placeholder="Email"
-                            value={nuevoCliente.email}
-                            onChange={(e) =>
-                                setNuevoCliente({
-                                    ...nuevoCliente,
-                                    email: e.target.value
-                                })
-                            }
+                            value={form.email}
+                            onChange={handleChange}
+                            required
                         />
                     </div>
 
-                    <div className="col-auto">
+                    <div className="col-md-2 d-flex gap-2">
                         <button
                             type="submit"
-                            className="btn btn-primary"
+                            className="btn btn-accent flex-fill"
                         >
-                            {
-                                clienteEditando
-                                    ? "Actualizar Cliente"
-                                    : "Agregar Cliente"
-                            }
+                            {editId ? "Actualizar" : "Crear"}
                         </button>
+
+                        {editId && (
+                            <button
+                                type="button"
+                                className="btn btn-outline-secondary"
+                                onClick={cancelarEdicion}
+                            >
+                                Cancelar
+                            </button>
+                        )}
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
 
-            <table className="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Telefono</th>
-                        <th>Email</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
+            <div className="card-app p-4">
+                {loading && (
+                    <LoadingSpinner label="Cargando clientes..." />
+                )}
 
-                <tbody>
-                    {clientes.map((cliente) => (
-                        <tr key={cliente.id}>
-                            <td>{cliente.id}</td>
-                            <td>{cliente.nombre}</td>
-                            <td>{cliente.telefono}</td>
-                            <td>{cliente.email}</td>
+                {error && (
+                    <p className="text-danger">
+                        {error}
+                    </p>
+                )}
 
-                            <td>
-                                <button
-                                    className="btn btn-warning btn-sm me-2"
-                                    onClick={() => editarCliente(cliente)}
-                                >
-                                    Editar
-                                </button>
+                {!loading && !error && (
+                    clientes.length === 0 ? (
+                        <EmptyState message="No hay clientes registrados." />
+                    ) : (
+                        <div className="table-responsive">
+                            <table className="table table-app">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nombre</th>
+                                        <th>Telófono</th>
+                                        <th>Email</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
 
-                                <button
-                                    className="btn btn-danger btn-sm"
-                                    onClick={() => eliminarCliente(cliente.id)}
-                                >
-                                    Eliminar
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                                <tbody>
+                                    {clientes.map((cliente) => (
+                                        <tr key={cliente.id}>
+                                            <td>{cliente.id}</td>
+                                            <td>{cliente.nombre}</td>
+                                            <td>{cliente.telefono}</td>
+                                            <td>{cliente.email}</td>
+
+                                            <td>
+                                                <button
+                                                    className="btn btn-sm btn-outline-warning me-2"
+                                                    onClick={() => handleEdit(cliente)}
+                                                >
+                                                    Editar
+                                                </button>
+
+                                                <button
+                                                    className="btn btn-sm btn-outline-danger"
+                                                    onClick={() => handleDelete(cliente.id)}
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )
+                )}
+            </div>
+        </>
     );
 }
 

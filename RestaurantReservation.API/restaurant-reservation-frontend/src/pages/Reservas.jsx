@@ -111,7 +111,7 @@ function Reservas() {
     };
 
     const handleDelete = async (id) => {
-        if (!window.confirm("¿Eliminar esta reserva?")) return;
+        if (!window.confirm("Â¿Eliminar esta reserva?")) return;
 
         try {
             await reservaService.remove(id);
@@ -135,7 +135,7 @@ function Reservas() {
         <>
             <PageHeader
                 title="Reservas"
-                subtitle="Gestión de reservas"
+                subtitle="GestiÃ³n de reservas"
             />
 
             <div className="card-app p-4 mb-4">

@@ -1,5 +1,13 @@
 import { NavLink } from "react-router-dom";
 
+import {
+    LayoutDashboard,
+    Users,
+    UtensilsCrossed,
+    Clock3,
+    CalendarDays
+} from "lucide-react";
+
 function Sidebar() {
     return (
         <div className="sidebar">
@@ -17,6 +25,7 @@ function Sidebar() {
             </div>
 
             <div className="p-2">
+
                 <NavLink
                     to="/"
                     end
@@ -24,7 +33,8 @@ function Sidebar() {
                         `sidebar-link ${isActive ? "active" : ""}`
                     }
                 >
-                    Dashboard
+                    <LayoutDashboard size={18} />
+                    <span>Dashboard</span>
                 </NavLink>
 
                 <NavLink
@@ -33,7 +43,8 @@ function Sidebar() {
                         `sidebar-link ${isActive ? "active" : ""}`
                     }
                 >
-                    Clientes
+                    <Users size={18} />
+                    <span>Clientes</span>
                 </NavLink>
 
                 <NavLink
@@ -42,7 +53,8 @@ function Sidebar() {
                         `sidebar-link ${isActive ? "active" : ""}`
                     }
                 >
-                    Mesas
+                    <UtensilsCrossed size={18} />
+                    <span>Mesas</span>
                 </NavLink>
 
                 <NavLink
@@ -51,7 +63,8 @@ function Sidebar() {
                         `sidebar-link ${isActive ? "active" : ""}`
                     }
                 >
-                    Turnos
+                    <Clock3 size={18} />
+                    <span>Turnos</span>
                 </NavLink>
 
                 <NavLink
@@ -60,8 +73,10 @@ function Sidebar() {
                         `sidebar-link ${isActive ? "active" : ""}`
                     }
                 >
-                    Reservas
+                    <CalendarDays size={18} />
+                    <span>Reservas</span>
                 </NavLink>
+
             </div>
         </div>
     );
